@@ -1,0 +1,6 @@
+{
+  "appId": "com.enkai.audio",
+  "appName": "Enkai Audio Studio",
+  "webDir": "dist",
+  "bundledWebRuntime": false
+}

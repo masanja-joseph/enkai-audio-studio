@@ -82,8 +82,11 @@ export class AudioEngine {
       this.startMeterLoop();
     }
     if (this.ctx.state === 'suspended') {
+      console.log('AudioEngine: Attempting to resume AudioContext...');
       await this.ctx.resume();
+      console.log('AudioEngine: AudioContext resumed. Current state:', this.ctx.state);
     }
+    console.log('AudioEngine: initAudioContext returning, state:', this.ctx.state);
     return this.ctx;
   }
 

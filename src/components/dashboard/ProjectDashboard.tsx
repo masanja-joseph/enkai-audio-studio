@@ -38,6 +38,8 @@ export const ProjectDashboard: React.FC<ProjectDashboardProps> = ({
   onSelectProject,
   onUpdateProject,
 }) => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [projectsList, setProjectsList] = useState<{
     id: string;
     name: string;
@@ -52,12 +54,18 @@ export const ProjectDashboard: React.FC<ProjectDashboardProps> = ({
   const [isCreating, setIsCreating] = useState(false);
 
   const refreshList = async () => {
+    setIsLoading(true);
+    setErrorMessage(null);
     try {
+      console.log('ProjectDashboard: Calling listSavedProjects...');
       const list = await listSavedProjects();
       console.log('ProjectDashboard: Loaded projects', list);
       setProjectsList(list);
     } catch (err) {
       console.error('Failed to list projects:', err);
+      setErrorMessage('Error: ' + (err instanceof Error ? err.message : String(err)));
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -272,7 +280,14 @@ export const ProjectDashboard: React.FC<ProjectDashboardProps> = ({
           </span>
 
           <div className="flex-1 overflow-y-auto flex flex-col gap-2 pr-1">
-            {projectsList.length === 0 ? (
+            {isLoading ? (
+              <div className="py-8 text-center text-xs text-[#5e6b7d]">Loading projects...</div>
+            ) : errorMessage ? (
+              <div className="py-8 text-center text-xs text-red-500 bg-red-900/20 rounded-lg p-4">
+                {errorMessage}
+                <button onClick={refreshList} className="block mt-2 underline cursor-pointer">Retry</button>
+              </div>
+            ) : projectsList.length === 0 ? (
               <div className="py-8 text-center text-xs text-[#5e6b7d]">
                 No other saved projects found in local storage.
               </div>
