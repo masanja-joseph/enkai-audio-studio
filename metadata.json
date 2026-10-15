@@ -1,0 +1,10 @@
+{
+  "name": "Enkai Audio Studio",
+  "description": "Professional vocal recording, movie dubbing, and multitrack audio workstation.",
+  "requestFramePermissions": [
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
